@@ -14,59 +14,29 @@ public class ViewActivity extends AppCompatActivity {
 
     private TextView viewText;
     private DatabaseHandler databaseHandler;
-    private ListView listView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
 
-        listView = (ListView) findViewById(R.id.listview);
 
+        viewText = (TextView) findViewById(R.id.viewText);
 
         databaseHandler = new DatabaseHandler(this);
 
         List<Contact> contactList = databaseHandler.viewAll();
 
-       //We are going to display contact in a listview
+       String data = "";
 
-        //We have to initialize an array adapter
+        for(Contact contact: contactList){
+            data += contact.getId()+"           "+contact.getName()+"         "+contact.getPhone_number()+"\n";
 
-        //we have a problem here
-        // arrayadapter can handle only string
-        //contact list is a list of contacts
-        //So we have to define an array of string which holds contact name only
-
-
-        //initialize string array
-        String[] contactnames = new String[contactList.size()];
-
-        //Now define an iterator, that iterates over each conatct in the list
-
-        Iterator<Contact> iterator = contactList.iterator();
-        int i = 0;
-        while (iterator.hasNext()){
-            Contact contact = iterator.next();
-
-            //store contact name to array
-            contactnames[i++] = contact.getName();
         }
 
-        //Check whether we have go the string array
-
-        Log.d("check",contactnames.toString()); //Logging values in android monitor
-
-        //hence we have got some value which is encoded , now pass the string array to adapter
-
-        ArrayAdapter adapter = new ArrayAdapter(this,R.layout.activity_view,contactnames);
-
-        //the layout must contain only textview
+        viewText.setText(data);
 
 
-        //attach adapter with listview
-
-        listView.setAdapter(adapter);
-
-        //So we have to implement viewAllContacts in databasehandler
     }
 }
